@@ -234,8 +234,47 @@ namespace Authentication
                 }
 
             }
-
-
+        }
+        public bool Login()
+        {
+            
+            if(FindLoginDB() && FindPassDB())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private bool FindPassDB()
+        {
+            using (command = new SqlCommand($"SELECT [HASH] FROM [User_Password]WHERE [HASH]='{user.Pass}'", Connection_DataBase.conn))
+            {
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
+        private bool FindLoginDB()
+        {
+            using (command = new SqlCommand($"SELECT [Login] FROM [User]WHERE [Login]='{user.Login}'", Connection_DataBase.conn))
+            {
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                    
+            }
         }
     }
 }

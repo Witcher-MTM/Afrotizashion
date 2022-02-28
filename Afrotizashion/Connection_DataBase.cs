@@ -18,7 +18,11 @@ namespace Authentication
             isConnect = false;
             try
             {
-                conn.Open();
+                if (!isConnect)
+                {
+                    conn.Open();
+
+                }
                 isConnect = true;
             }
             catch (System.Exception)

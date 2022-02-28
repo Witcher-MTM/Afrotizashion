@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 
 namespace Authentication.Controllers
@@ -19,7 +17,7 @@ namespace Authentication.Controllers
             _logger = logger;
 
         }
-        [HttpGet]
+        [HttpPost]
         public StatusCodeResult AddUser(string login, string pass, string email, int year, int month, int day)
         {
             if (DateTime.DaysInMonth(year, month) < day)

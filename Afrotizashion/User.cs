@@ -2,6 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
+using System.Text;
+
 namespace Authentication
 {
     public class User
@@ -19,7 +22,11 @@ namespace Authentication
             BirthDay = DateTime.MinValue;
             Email = String.Empty;
         }
-
+        public User(string login , string pass)
+        {
+            this.Login = login;
+            this.Pass = ComputeSha256Hash(pass);
+        }
         public User(string login, string pass, DateTime BD, string email, DateTime registr)
         {
             this.Login = login;
@@ -46,6 +53,7 @@ namespace Authentication
         {
             if (Pass.Length > 6)
             {
+                this.Pass = ComputeSha256Hash(Pass);
                 return true;
             }
             else
@@ -76,7 +84,23 @@ namespace Authentication
                 return false;
             }
         }
+        private string ComputeSha256Hash(string rawData)
+        {
+            // Create a SHA256   
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
 
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
 
     }
 }
